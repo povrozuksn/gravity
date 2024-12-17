@@ -1,0 +1,49 @@
+#include "TXLib.h"
+
+struct Mario
+{
+     int x;
+     int y;
+     HDC image;
+     HDC image_run;
+     HDC image_jump;
+
+     void draw()
+     {
+        txTransparentBlt(txDC(), x, y, 160, 200, image, 0, 0, TX_WHITE);
+     }
+};
+
+int main()
+{
+txCreateWindow (800, 600);
+txTextCursor (false);
+
+Mario mario = {100, 250, txLoadImage("mario_run.bmp"), txLoadImage("mario_run.bmp"), txLoadImage("mario_iump.bmp")};
+
+    while (!GetAsyncKeyState(VK_ESCAPE))
+    {
+         txClear();
+         txBegin();
+
+         mario.draw();
+
+         if(GetAsyncKeyState(VK_RIGHT)) mario.x += 5;
+         if(GetAsyncKeyState(VK_LEFT))  mario.x -= 5;
+
+         if(GetAsyncKeyState(VK_SPACE))   //прыжок
+         {
+            mario.y -= 40;
+         }
+
+         
+
+
+         txEnd();
+         txSleep(10);
+    }
+
+txDisableAutoPause();
+return 0;
+}
+
